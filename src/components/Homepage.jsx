@@ -3,7 +3,7 @@ import millify from 'millify';
 import { Typography, Row, Col, Statics, Statistic } from 'antd';
 import { Link } from 'react-router-dom';
 import { useGetCryptosQuery } from '../services/cryptoApi';
-import { Cryptocurrencies } from '.';
+import { Cryptocurrencies, News } from '.';
 const { Title } = Typography;
 
 const Homepage = () => {
@@ -26,12 +26,12 @@ const Homepage = () => {
                 <Title level={2} className="home-title">Top 10 Cryptocurrencies in the world</Title>
                 <Title level={3} className="show-more"><Link to="/criptocurrencies">Show More</Link></Title>
             </div>
-            <Cryptocurrencies />
+            <Cryptocurrencies simplified />
             <div className="home-heading-container">
                 <Title level={2} className="home-title">Latest Crypto News</Title>
                 <Title level={3} className="show-more"><Link to="/news">Show More</Link></Title>
             </div>
-            
+            <News simplified />
         </>
     )
 }
