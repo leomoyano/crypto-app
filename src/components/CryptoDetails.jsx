@@ -4,8 +4,8 @@ import { useParams } from 'react-router'
 import millify from 'millify'
 import { Col, Row, Typography, Select } from 'antd'
 import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined } from '@ant-design/icons';
-import { useGetCryptoDetailsQuery } from '../services/cryptoApi'
-import lineChart from './lineChart'
+import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi'
+import LineChart from './LineChart'
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -14,8 +14,11 @@ const CryptoDetails = () => {
     const { coinId } = useParams();
     const [timePeriod, setTimePeriod] = useState('7d')
     const { data, isFetching } = useGetCryptoDetailsQuery(coinId)
+    const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timePeriod })
     const cryptoDetails = data?.data?.coin;
-    console.log('cryptoDetails', cryptoDetails);
+
+    if(isFetching) return 'Loading...';
+
     const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
     var stats = [] //Es VAR por que SI puede cambiar su valor y su scope es local no solo donde fue declarado como LET.
@@ -57,7 +60,7 @@ const CryptoDetails = () => {
             >
                 {time.map((date) => <Option value={date} key={date}>{date}</Option>)}
             </Select>
-            <lineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name}/>
+            <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name}/>
             <Col className="stats-container">
                 <Col className="coin-value-statistics">
                     <Col className="coin-value-statistics-heading">
